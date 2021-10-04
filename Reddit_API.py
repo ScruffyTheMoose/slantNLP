@@ -1,3 +1,6 @@
+# Most sports related subreddits are just reposting twitter content through screenshots and links so we'll need to look at evaluating comments on the most popular threads.
+# Changes to come to this module since it is not even close to being ready for implementation.
+
 from psaw import PushshiftAPI
 import datetime
 
