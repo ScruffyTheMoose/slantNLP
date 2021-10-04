@@ -1,3 +1,7 @@
+# I am leaving this as a placeholder for the updated version for sentiment data.
+# This is (obviously) not a database for sentiment related data. This is from a separate finance related algorithm.
+# Please look at the 'processor' module to see what data will be gathered, analyzed, and it's dataframe output.
+
 import sqlite3
 
 connection = sqlite3.connect('app.db')
