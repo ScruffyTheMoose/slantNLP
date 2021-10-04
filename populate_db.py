@@ -1,8 +1,11 @@
+# Leaving this as a placeholder for a modified version specifically for sentiment related data.
+# This is from a finance related algorithm I am building that is sending data to a SQLite db.
+
 import sqlite3
 import json
 from urllib.request import urlopen
 
-url = "https://financialmodelingprep.com/api/v3/stock/list?apikey=f02d97317321d926e73f2343ac8a5b65"
+url = "https://financialmodelingprep.com/api/v3/stock/list?apikey=*****"
 
 def getParsedData(url):
     response = urlopen(url)
