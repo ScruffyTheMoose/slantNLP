@@ -1,3 +1,5 @@
+# Nearly complete module for sentiment analysis of a text. Only changes that are needed currently are to tweak sensitivity. 
+
 from itertools import count
 import pandas as pd
 import numpy as np
