@@ -1,6 +1,4 @@
-# Nearly complete module for sentiment analysis of a text. Only changes that are needed currently are to tweak sensitivity. 
-
-from itertools import count
+from nltk.tag import pos_tag
 import pandas as pd
 import numpy as np
 from nltk.tokenize import RegexpTokenizer #to tokenize the text body
@@ -12,6 +10,9 @@ from nltk import FreqDist
 import emoji
 import re #to remove links that may be in the text body
 import spacy
+import scispacy
+from string import punctuation
+from collections import Counter
 
 # Class that contains methods for cleaning input data to prepare for sentiment analysis
 class PreProcess:
@@ -68,9 +69,9 @@ class PreProcess:
 
         return lemmatized_tks #returns list
         
-# Class that apply preprocessing methods and then analyzes the resulting text.
+# Class that apply preprocessing methods and then analyzes the resulting text for sentiment.
 # Will output -1 or 1 at completion of process representing negative or positive sentiment
-class Analyze:
+class Sentiment:
 
     def __init__(self) -> None:
         pass
@@ -117,4 +118,42 @@ class Analyze:
         return count
 
 
+# Class that evaluates the keywords and keyphrases in the text being evaluated.
+# These phrases will be used to identify shared sentiment across a large number of posts.
+# Opted to use scispaCy pipeline since it is more effective at identifying scientific and medical terminology.
+# Target data is not science/medical, but having extra access is better than missing data.
+class Keywords:
+
+    def __init__(self) -> None:
+        pass
+
+    # Method parses input text, identifies keywords, and splits them into a list.
+    def keywords(self, text):
+        nlp = spacy.load('en_core_sci_sm') #loading spacy science pipeline. More effective at variety data
+        doc = nlp(text) #applying pipeline
+        pos_tag = ["PROPN", "ADJ", "NOUN"] #word types we want
+        result = []
+
+        for token in doc: #parsing keywords
+            if token.text in nlp.Defaults.stop_words or token.text in punctuation:
+                continue
+            
+            if token.pos_ in pos_tag:
+                result.append(token.text)
+
+        return result #returns list
+
+    # Method counts occurrences of words from list of keywords
+    def keywordCount(self, keyword_list):
+        return Counter(keyword_list).most_common(5) #returns dict
+
+    # Method identifies keyphrases in text based on spaCy scientific pipeline.
+    def keyphrases(self, text):
+        nlp = spacy.load('en_core_sci_sm') #loading pipeline
+        doc = nlp(text) #applying pipeline
+        result = []
+
+        for element in doc.ents: #converting spacy objects into individual lines of text in a list.
+            result.append(element)
+        return result #returns list
 
