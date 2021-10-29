@@ -1,8 +1,6 @@
-# Please look at the 'processor' module to see what data will be gathered, analyzed, and it's dataframe output.
-
 import sqlite3
 
-# Script to create parent and child table for NFL related twitter data. Subject to change given different data related needs.
+# Script to create parent and child table for NFL related twitter data. Will follow same structor for other sports
 
 connection = sqlite3.connect('nfl.db')
 
@@ -11,21 +9,41 @@ cursor = connection.cursor()
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS nfl_teams (
         id INTEGER PRIMARY KEY,
-        tag TEXT NOT NULL UNIQUE,
         team TEXT NOT NULL UNIQUE
     )
 """)
 
 cursor.execute("""
-    CREATE TABLE IF NOT EXISTS stock_price (
+    CREATE TABLE IF NOT EXISTS posts (
         id INTEGER PRIMARY KEY,
-        team_id INTEGER,
-        body TEXT NOT NULL,
+        team_id INTEGER NOT NULL,
         sentiment NOT NULL,
-        tags NOT NULL,
-        keywords,
-        likes INTEGER,
+        likes INTEGER NOT NULL,
+        shares INTEGER NOT NULL,
         date NOT NULL,
+        FOREIGN KEY (team_id) REFERENCES nfl_teams (id)
+    )
+""")
+
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS phrases (
+        id INTEGER PRIMARY KEY,
+        team_id INTEGER NOT NULL,
+        post_id INTEGER NOT NULL,
+        body TEXT NOT NULL,
+        date NOT NULL,
+        FOREIGN KEY (post_id) REFERENCES posts (id),
+        FOREIGN KEY (team_id) REFERENCES nfl_teams (id)
+    )
+""")
+
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS hashtags (
+        id INTEGER PRIMARY KEY,
+        team_id INTEGER NOT NULL,
+        tag TEXT NOT NULL,
         FOREIGN KEY (team_id) REFERENCES nfl_teams (id)
     )
 """)
