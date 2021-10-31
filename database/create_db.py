@@ -14,6 +14,35 @@ cursor.execute("""
 """)
 
 cursor.execute("""
+    CREATE TABLE IF NOT EXISTS nba_teams (
+        id INTEGER PRIMARY KEY,
+        team TEXT NOT NULL UNIQUE
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS nbl_teams (
+        id INTEGER PRIMARY KEY,
+        team TEXT NOT NULL UNIQUE
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS nhl_teams (
+        id INTEGER PRIMARY KEY,
+        team TEXT NOT NULL UNIQUE
+    )
+""")
+
+# FIFA (and all football) is tbd since it is massive and will require a ton of work to buildup to resources to handle
+# cursor.execute("""
+#     CREATE TABLE IF NOT EXISTS fifa_teams (
+#         id INTEGER PRIMARY KEY,
+#         team TEXT NOT NULL UNIQUE
+#     )
+# """)
+
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS posts (
         id INTEGER PRIMARY KEY,
         team_id INTEGER NOT NULL,
