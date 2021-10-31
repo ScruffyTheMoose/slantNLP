@@ -2,7 +2,7 @@ import sqlite3
 
 # Script to create parent and child table for NFL related twitter data. Will follow same structor for other sports
 
-connection = sqlite3.connect('nfl.db')
+connection = sqlite3.connect('slant.db')
 
 cursor = connection.cursor()
 
