@@ -1,7 +1,6 @@
-from processor import PreProcess as pp
+import string
 from processor import Sentiment as sn
-from processor import SplitPhrases as sp
-from phrase import Phrase
+import datetime
 
 # This module will be used to create Post object representing a single tweet. 
 # They will contain the initial information: tweet text, date/time, user, likes, shares, etc. when instantiated.
@@ -10,15 +9,23 @@ from phrase import Phrase
 
 class Post:
 
-    # Constructor
-    def __init__(self, user, team, baseText, datetime, likes, shares):
+    # Constructor which assigned data from parameters and then applies those arguments to components from processor module
+    def __init__(self, user: string, team: string, baseText: string, datetime: datetime, likes: int, shares: int) -> None:
+        
+        # storing basic data for the post that will be fed directly into the database
         self.user = user
         self.team = team
         self.baseText = baseText
-        self.datetime = datetime
         self.likes = likes
         self.shares = shares
+        self.datetime = datetime
 
-        self.phrases = []
-        for element in sp.keyphrases(baseText):
-            self.phrases.append(Phrase(element, team, datetime))
+
+    # Method to assign instance variables containing sentiment information to each post.
+    def setSentiment(self) -> None:
+        sentiment = sn.sentiment(self.baseText)
+
+        self.positive = sentiment['pos']
+        self.neutral = sentiment['neu']
+        self.negative = sentiment['neg']
+        self.compound = sentiment['compound']
